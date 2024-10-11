@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace BookRentalManagementSystem_V2
                 Console.WriteLine("1. Add Book");
                 Console.WriteLine("2. View All Books");
                 Console.WriteLine("3. Update Books");
+                Console.WriteLine("4. Delete Book");
+                Console.WriteLine("5. Exit");
                 choise = int.Parse(Console.ReadLine());
 
                 switch (choise)
@@ -60,13 +63,25 @@ namespace BookRentalManagementSystem_V2
                         {
                             Console.Write("Enter New Title: ");
                             findBook.Title = Console.ReadLine();
-                            Console.Write("Enter New Author");
+                            Console.Write("Enter New Author: ");
                             findBook.Author = Console.ReadLine();
-                            Console.Write("Enter new Rental Price");
+                            Console.Write("Enter new Rental Price: ");
                             findBook.RentalPrice = decimal.Parse (Console.ReadLine());
 
                             bookRepository.UpdateBook(findBook);
                         }
+                        break;
+                    case 4:
+                        Console.Write("Enter Book ID To Delete: ");
+                        string bookIdd = Console.ReadLine();
+                        bookRepository.DeleteBook(bookIdd);
+                        break;
+                    case 5:
+                        Console.WriteLine("Exiting .....!");
+                        break;
+
+                    default:
+                        Console.WriteLine("\n InValid Input ");
                         break;
                 }
 

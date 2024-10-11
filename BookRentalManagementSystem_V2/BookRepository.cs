@@ -115,5 +115,30 @@ namespace BookRentalManagementSystem_V2
             }
         }
 
+        //Delete Book
+        public void DeleteBook(string id)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection .Open();
+                string querry = "DELETE FROM Books WHERE BookId = @bookid";
+                using (SqlCommand command = new SqlCommand(querry, connection))
+                {
+                    command.Parameters.AddWithValue("@bookid", id);
+                    int affectedRow = command.ExecuteNonQuery();
+                    if (affectedRow > 0)
+                    {
+                        Console.WriteLine("Book Deleted successfuly");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Book not found");
+                    }
+
+                }
+
+            }
+        }
+
     }
 }
