@@ -60,5 +60,60 @@ namespace BookRentalManagementSystem_V2
             return list;
         }
 
+        //Get By ID
+        public Book GetBookById(string bookId)
+        {
+            Book book = new Book();
+            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string querry = "SELECT * FROM Books WHERE BookId = @bookID";
+                using(SqlCommand command = new SqlCommand(querry , connection))
+                {
+                    command.Parameters.AddWithValue("@bookID", bookId);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            book = new Book()
+                            {
+                                BookId=reader.GetString(0),
+                                Title = reader.GetString(1),
+                                Author = reader.GetString(2),
+                                RentalPrice=reader.GetDecimal(3),
+                            };
+                        }
+                    }
+                }
+            }
+            return book;
+        }
+
+        //Update Book
+        public void UpdateBook(Book book)
+        {
+           using(SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                string querry = "UPDATE Books SET Title = @title , Author = @author , RentalPrice = @rental WHERE BookId = @bookid";
+                using(SqlCommand command=new SqlCommand(querry , connection))
+                {
+                    command.Parameters.AddWithValue("@bookid" , book.BookId);
+                    command.Parameters.AddWithValue ("@title" , book.Title);
+                    command.Parameters.AddWithValue("@author", book.Author);
+                    command.Parameters.AddWithValue("@rental", book.RentalPrice);
+                    int affectedRow = command.ExecuteNonQuery();
+                    if (affectedRow > 0)
+                    {
+                        Console.WriteLine("Book Updated Succsfully");
+                    }
+                    else 
+                    {
+                        Console.WriteLine("Book Not Found");
+                    }
+                }
+            }
+        }
+
     }
 }
